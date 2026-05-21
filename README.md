@@ -56,43 +56,34 @@ Monte Carlo methods calculate the average return obtained after visiting a state
 
 ## Program
 
-```import numpy as np
+```
+import numpy as np
 import matplotlib.pyplot as plt
 from collections import defaultdict
-import gymnasium as gym
+import gym
 
-# Create Environment
 env = gym.make("FrozenLake-v1", is_slippery=False)
 
-# Parameters
 gamma = 0.9
 episodes = 5000
 
-# State value function
 V = defaultdict(float)
 
-# Returns storage
 returns = defaultdict(list)
 
-# Random policy
 def policy(state):
     return env.action_space.sample()
 
-# Generate episode
 def generate_episode():
-
     episode = []
 
     state, _ = env.reset()
-
     done = False
 
     while not done:
-
         action = policy(state)
 
         next_state, reward, terminated, truncated, _ = env.step(action)
-
         done = terminated or truncated
 
         episode.append((state, action, reward))
@@ -101,7 +92,6 @@ def generate_episode():
 
     return episode
 
-# Monte Carlo Prediction
 for ep in range(episodes):
 
     episode = generate_episode()
@@ -109,7 +99,6 @@ for ep in range(episodes):
     G = 0
     visited_states = set()
 
-    # Traverse backward
     for t in reversed(range(len(episode))):
 
         state, action, reward = episode[t]
@@ -125,35 +114,30 @@ for ep in range(episodes):
 
             visited_states.add(state)
 
-# Print Values
 print("State Value Function:\n")
 
 for s in range(env.observation_space.n):
     print(f"State {s}: {V[s]:.3f}")
 
-# Convert to 4x4 grid
 value_grid = np.zeros((4,4))
 
 for state in range(16):
-
     row = state // 4
     col = state % 4
 
     value_grid[row, col] = V[state]
 
-# Plot
 plt.figure(figsize=(6,6))
 
-plt.imshow(value_grid, cmap='coolwarm')
+plt.imshow(value_grid)
 
 for i in range(4):
     for j in range(4):
-
         plt.text(j, i,
                  round(value_grid[i,j],2),
                  ha='center',
                  va='center',
-                 color='black',
+                 color='white',
                  fontsize=12)
 
 plt.title("State Value Function Estimate")
@@ -162,10 +146,15 @@ plt.show()
 ```
 ## Output
 
-<img width="402" height="456" alt="image" src="https://github.com/user-attachments/assets/2fa70fc6-17bb-4de0-ac56-8ac8af934cec" />
+
+<img width="328" height="389" alt="image" src="https://github.com/user-attachments/assets/195ec52a-8762-4520-9f48-69b20d4160b4" />
+
+
 
 
 ### Output Graph
+
+<img width="724" height="612" alt="image" src="https://github.com/user-attachments/assets/8f1714a2-d0a8-4d51-a02c-22370a235e19" />
 
 The following heatmap is generated for the estimated state-value function:
 
@@ -173,9 +162,9 @@ The following heatmap is generated for the estimated state-value function:
 - Terminal states have value 0.
 - States farther from terminal states have larger negative values.
 
-<img width="762" height="702" alt="image" src="https://github.com/user-attachments/assets/d67ce413-2ef2-482e-9da9-bd1768ea9f7f" />
 
 
+---
 ## Result
 
 Thus, the Monte Carlo Prediction algorithm was successfully implemented for estimating the state-value function of the environment. The value of each state was calculated using sampled episodes, and the estimated state-value function was plotted successfully using a heatmap.
