@@ -56,15 +56,10 @@ Monte Carlo methods calculate the average return obtained after visiting a state
 
 ## Program
 
-```python
-#Implementation of MC prediction for estimating the state-value function and 
-#Calculate and plot the state-value function estimate
-import numpy as np
+```import numpy as np
 import matplotlib.pyplot as plt
 from collections import defaultdict
 import gymnasium as gym
-import sys
-!{sys.executable} -m pip install gymnasium
 
 # Create Environment
 env = gym.make("FrozenLake-v1", is_slippery=False)
@@ -85,15 +80,19 @@ def policy(state):
 
 # Generate episode
 def generate_episode():
+
     episode = []
 
     state, _ = env.reset()
+
     done = False
 
     while not done:
+
         action = policy(state)
 
         next_state, reward, terminated, truncated, _ = env.step(action)
+
         done = terminated or truncated
 
         episode.append((state, action, reward))
@@ -136,6 +135,7 @@ for s in range(env.observation_space.n):
 value_grid = np.zeros((4,4))
 
 for state in range(16):
+
     row = state // 4
     col = state % 4
 
@@ -144,15 +144,16 @@ for state in range(16):
 # Plot
 plt.figure(figsize=(6,6))
 
-plt.imshow(value_grid)
+plt.imshow(value_grid, cmap='coolwarm')
 
 for i in range(4):
     for j in range(4):
+
         plt.text(j, i,
                  round(value_grid[i,j],2),
                  ha='center',
                  va='center',
-                 color='white',
+                 color='black',
                  fontsize=12)
 
 plt.title("State Value Function Estimate")
@@ -161,9 +162,8 @@ plt.show()
 ```
 ## Output
 
-```text
+<img width="402" height="456" alt="image" src="https://github.com/user-attachments/assets/2fa70fc6-17bb-4de0-ac56-8ac8af934cec" />
 
-```
 
 ### Output Graph
 
@@ -173,9 +173,9 @@ The following heatmap is generated for the estimated state-value function:
 - Terminal states have value 0.
 - States farther from terminal states have larger negative values.
 
+<img width="762" height="702" alt="image" src="https://github.com/user-attachments/assets/d67ce413-2ef2-482e-9da9-bd1768ea9f7f" />
 
 
----
 ## Result
 
 Thus, the Monte Carlo Prediction algorithm was successfully implemented for estimating the state-value function of the environment. The value of each state was calculated using sampled episodes, and the estimated state-value function was plotted successfully using a heatmap.
